@@ -56,6 +56,18 @@ public void ConfigureServices(IServiceCollection services) {
 }
 
 public void Configure(IApplicationBuilder app, IHostingEnvironment env) {
+
+    app.UseRequestLocalization(new RequestLocalizationOptions {
+        DefaultRequestCulture = new RequestCulture(DefaultCulture),
+        // Formatting numbers, dates, etc.
+        SupportedCultures = _supportedCultures,
+        // UI strings that we have localized.
+        SupportedUICultures = _supportedCultures
+    });
+
+    var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
+    app.UseRequestLocalization(locOptions.Value);
+    
     app.UseEZmsAzureFilesProvider(env);
     app.UseAuthentication();
 
