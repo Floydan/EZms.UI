@@ -1,5 +1,5 @@
 # EZMS.UI
-This is the User interface part of the EZms CMS platform
+This is the User interface part of the EZms CMS platform, for more information on using EZms as a whole, please to to [EZms](https://github.com/Floydan/EZms) or read the [EZms wiki](https://github.com/Floydan/EZms/wiki)
 
 To enable the UI you need to add the following to your .NET Core startup
 
