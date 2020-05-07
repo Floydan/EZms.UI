@@ -1,0 +1,7 @@
+﻿@model IEnumerable<EZms.Core.Models.NavigationNode>
+<ul class="list-unstyled components sortable">
+    @foreach (var node in Model)
+    {
+        <partial name="_NavigationNodePartial" model="@node" />
+    }
+</ul>

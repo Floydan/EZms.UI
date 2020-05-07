@@ -1,0 +1,47 @@
+﻿@using EZms.Core.Extensions
+@model EZms.Core.Models.NavigationNode
+<li class="draggable" data-id="@Model.Id">
+    <div class="d-flex flex-row menu-item">
+        <div class="text-truncate">
+            @*@if (Model.Children.Any())
+            {
+                <i class="fas fa-minus-square text-secondary"></i> 
+            }*@
+            <a href="@(Model.Url ?? "")" class="js-content-link text-secondary" data-contentid="@Model.Id" data-editurl="@Url.Page("Edit", new {id = Model.Id})">
+                @if (Model.IsStartPage)
+                {
+                    <i class="fas fa-home"></i>
+                }
+                else if (Model.IsProduct)
+                {
+                    <span>
+                        └ <i class="fas fa-barcode"></i>
+                    </span>
+                }
+                else
+                {
+                    <span>
+                        └ <i class="far fa-file"></i>
+                    </span>
+                }
+                @if (Model.IsPublished)
+                {
+                    @Model.Name
+                }
+                else
+                {
+                    <em>@Model.Name</em>
+                }
+            </a>
+        </div>
+        <div class="ml-auto hover-menu text-secondary" data-id="@Model.Id" data-published="@Model.IsPublished.ToString().ToLower()">
+            <i class="fas fa-bars"></i>
+        </div>
+    </div>
+    <ul class="list-unstyled pl-3 sortable" data-parentid="@Model.Id">
+        @foreach (var child in Model.Children)
+        {
+            <partial name="_NavigationNodePartial.cshtml" model="child"/>
+        }
+    </ul>
+</li>

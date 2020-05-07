@@ -1,0 +1,61 @@
+﻿@page
+@using EZms.UI.Infrastructure.Helpers
+@model EZms.UI.Areas.EZms.Pages.IndexModel
+
+<div class="h-100 wrapper">
+    <div id="cms-site-navigation" class="sidebar sidebar-1 col-2">
+        <h5 class="sidebar-header bg-secondary text-light">@Localizer["Site hierarchy"]</h5>
+        <partial name="_Navigation" model="@Model.Navigation" />
+
+        <div class="dropdown-menu px-4 py-1" id="context-menu">
+            <div id="create-sub-page" class="mb-1">
+                <h6 class="dropdown-header px-0">@Localizer["Create child page"]</h6>
+                <div class="d-flex flex-row">
+                    <select name="guid" class="form-control" asp-items="@(SelectListHelpers.ContentTypes())"></select>
+                    <button class="btn btn-sm btn-secondary"><i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <a id="publish-link" class="js-publish-state-link hide dropdown-item px-0 text-info" href="#"><i class="fas fa-upload"></i> @Localizer["Publish"]</a>
+            <a id="unpublish-link" class="js-publish-state-link hide dropdown-item px-0 text-warning" href="#"><i class="fas fa-download"></i> @Localizer["Unpublish"]</a>
+            <a id="delete-link" class="dropdown-item px-0 text-danger" href="#"><i class="fas fa-trash"></i> @Localizer["Delete"]</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="loading" style="display: none;">Loading...</div>
+        <div class="sidebar-toggle bg-light text-dark">
+            <i class="fas fa-caret-left"></i>
+            <i class="fas fa-caret-right"></i>
+        </div>
+        <iframe class="w-100 border border-secondary rounded shadow-sm pt-3"
+                id="page-frame"
+                src="about:blank"></iframe>
+    </div>
+    <div id="cms-file-browser" class="sidebar sidebar-2">
+        <div class="sidebar-toggle-2 bg-light text-dark">
+            <i class="fas fa-caret-left"></i>
+            <i class="fas fa-caret-right"></i>
+        </div>
+        <iframe class="w-100 h-100 border-0"
+                id="filebrowser-frame"
+                src="@Url.Page("FileBrowser")"></iframe>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function() {
+            window.ezmsNavigation = new EzmsNavigation(
+                '@Html.AntiForgeryToken()',
+                '@Url.Page("/Index", "SetLanguage", new { area = "EZms", returnUrl = Url.Page("/Index", new { area = "EZms" }) })',
+                '@Url.Page("Index", "Navigation")',
+                '@Url.Page("Index", "UpdateSiteHierarchy")',
+                '@Url.Page("Create")',
+                '@Url.Page("Edit", "Publish", new { id = 0 })',
+                '@Url.Page("Edit", "UnPublish", new { id = 0 })',
+                '@Url.Page("Delete", new { id = 0 })'
+            );
+            window.ezmsNavigation.init();
+        });
+    </script>
+}

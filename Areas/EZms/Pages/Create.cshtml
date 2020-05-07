@@ -1,0 +1,81 @@
+﻿@page
+@using EZms.Core.Extensions
+@using EZms.UI.Infrastructure.Helpers
+@model EZms.UI.Areas.EZms.Pages.CreateModel
+
+@{
+    Layout = "Shared/_LayoutIframeContent";
+}
+
+<h1>@Localizer["Create"] - <small>@Model.ContentTypeGuid.GetPageDataValues()?.Name</small></h1>
+<form asp-page="Create" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="ContentTypeGuid" />
+    <div class="form-row">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="col-12 p-3 mb-4" style="background: #bfefe1">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-between">
+                        <h3>@Localizer["Page properties"]</h3>
+                        <input type="submit" class="btn btn-success" value="@Localizer["Save"]" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">@Localizer[$"CMS.{nameof(Model.Name)}"]</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UrlSlug" class="control-label">@Localizer[$"CMS.{nameof(Model.UrlSlug)}"]</label>
+                        <input asp-for="UrlSlug" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="ParentId" class="control-label">@Localizer[$"CMS.{nameof(Model.ParentId)}"]</label>
+                        <select asp-for="ParentId" class="form-control" asp-items="@(SelectListHelpers.GetSiteNavigationContentItems(Model.ParentId))"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@Localizer[$"CMS.ContentType"]</label>
+                        <span asp-for="Id" class="form-control bg-light">@(Model.ContentTypeGuid.GetPageDataValues()?.Name)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="row">
+                <div class="col">
+                    <h4>@Localizer["Model properties"]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <partial model="@Model.GroupedProperties" name="EditorTemplates/TabGroups" />
+                    @*@foreach (var property in Model.ContentModel.GetType().GetProperties())
+                    {
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.Label(@property.Name)
+                            </div>
+                            <div class="col-md-3">
+                                @try
+                                {
+                                    @Html.Editor(@property.Name, new {htmlAttributes = new {@class = "form-control"}})
+                                }
+                                catch (Exception)
+                                {
+                                    //do nothing
+                                }
+                                @Html.ValidationMessage(@property.Name, new {htmlAttributes = new {@class = "text-danger"}})
+                            </div>
+                        </div>
+                    }*@
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,301 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 13px;
+    line-height: 1.3em;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    /*font-family: 'Nunito Sans', sans-serif;*/
+}
+
+@media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    font-weight: bold;
+    line-height: 1.7;
+    cursor: text;
+    position: relative;
+}
+
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+h4 {
+    font-size: 1.2em;
+}
+
+h5 {
+    font-size: 1em;
+}
+
+h6 {
+    color: #777;
+    font-size: 1em;
+}
+
+input, textarea, select, button {
+    /*font-family: 'Nunito Sans', sans-serif;*/
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    /*line-height: 60px;*/ /* Vertically center the text there */
+}
+
+.pull-right {
+    margin-left: auto !important;
+}
+
+.markdown-editor .preview {
+    display: none;
+}
+
+textarea {
+    padding-top: 10px;
+    padding-bottom: 25px;
+    width: 100%;
+    display: block;
+}
+
+blockquote {
+    border-left: 4px solid #DDD;
+    padding: 0 15px;
+    color: #777;
+    margin: 15px 0;
+}
+
+.input-contrast {
+    background-color: #fafbfc;
+}
+
+.upload-enabled textarea {
+    border-bottom: 1px dashed #dfe2e5;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    display: block;
+}
+
+.bb-dashed {
+    border-bottom: 1px dashed #dfe2e5;
+}
+
+.bt-dashed {
+    border-top: 1px dashed #dfe2e5;
+}
+
+.markdown-editor {
+    padding: 8px;
+    background: #bfefe1;
+    position: relative;
+}
+
+    .markdown-editor textarea {
+        display: block;
+        max-height: 500px;
+        min-height: 100px;
+        padding: 8px;
+        resize: vertical;
+        width: 100%;
+        line-height: 1.5;
+        margin: 0;
+        max-width: 100%;
+        font-size: 14px;
+    }
+
+
+
+        .markdown-editor textarea:focus {
+            outline: 0 !important;
+            box-shadow: none !important;
+        }
+
+    .markdown-editor .preview {
+        display: none;
+        border: 1px solid rgb(206, 212, 218);
+        border-radius: 0.25rem;
+        background: rgb(255, 255, 255);
+        padding: 0.375rem 0.75rem;
+    }
+
+    .markdown-editor .toolbar {
+        cursor: default;
+        color: #3e4b71;
+    }
+
+        .markdown-editor .toolbar a.btn {
+            color: #3e4b71;
+            font-weight: bold;
+            background: #fff;
+            margin-bottom: -1px;
+            border-radius: 0;
+            border-top-left-radius: 0.25em;
+            border-top-right-radius: 0.25em;
+            border: 1px solid rgb(206, 212, 218);
+            position: relative;
+            z-index: 1000;
+        }
+
+            .markdown-editor .toolbar a.btn:focus {
+                outline: 0 !important;
+                box-shadow: none !important;
+            }
+
+            .markdown-editor .toolbar a.btn.active {
+                border-bottom: 1px solid #fff;
+            }
+
+        .markdown-editor .toolbar span:hover {
+            color: #007bff;
+        }
+
+.items .list-item .card {
+    overflow: hidden;
+}
+
+.items .list-item .image {
+    min-height: 230px;
+    max-height: 230px;
+}
+
+    .items .list-item .image img {
+        max-height: 230px;
+    }
+
+.items .list-item h5 {
+    height: 45px;
+}
+
+.items [data-invoiced=true] {
+    display: none;
+}
+
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-outer-spin-button,
+input[type="time"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0;
+}
+
+input[type="number"], input[type="date"], input[type="time"] {
+    -moz-appearance: textfield !important;
+}
+
+
+.hover-menu {
+    display: none;
+    cursor: pointer;
+}
+
+.menu-item:hover .hover-menu {
+    display: block;
+}
+
+.draggable-placeholder {
+    height: 13px;
+    display: none;
+    background: repeating-linear-gradient( -55deg, rgba(35,35,35,0.5), rgba(35,35,35,0.5) 3px, rgba(35,35,35,0.5) 3px, rgba(51,51,51,0.5) 6px );
+}
+
+.sortable-placeholder {
+    border: 1px dotted #70ab9a;
+    /*background: #bfefe1;*/
+    height: 20px;
+    background: repeating-linear-gradient( -55deg, rgba(35,35,35,0.5), rgba(35,35,35,0.5) 3px, rgba(35,35,35,0.5) 3px, rgba(51,51,51,0.5) 6px );
+}
+
+ul.sortable {
+    min-height: 2px;
+}
+
+.model-group {
+    position: relative;
+}
+
+.temporary-entry-remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+}
+
+.temporary-entry-sort-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 10;
+}
+
+.sortable-handle {
+    cursor: ns-resize;
+}
+
+.filebrowser-folder, .filebrowser-file {
+    cursor: pointer;
+}
+
+    .filebrowser-folder.active, .filebrowser-file.active {
+        font-weight: bold;
+    }

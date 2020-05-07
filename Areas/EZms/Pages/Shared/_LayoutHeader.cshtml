@@ -1,0 +1,42 @@
+﻿@using EZms.Core.Enums
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-page="Index" asp-area="EZms">EZms</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-lg-inline-flex">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (User.IsInRole(EZmsRoles.EZmsAdmin.ToString()) || User.IsInRole(EZmsRoles.EZmsEditor.ToString()))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link mt-1" asp-page="/Index" asp-area="EZms">@Localizer["CMS"]</a>
+                        </li>
+                    }
+                    @if (User.IsInRole(EZmsRoles.EZmsAdmin.ToString()))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link mt-1" asp-page="/Admin/Index" asp-area="EZms">@Localizer["Administration"]</a>
+                        </li>
+                    }
+                    <li class="ml-auto"></li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary mt-1" href="/"><i class="fas fa-globe-europe"></i> <span class="d-lg-none">@Localizer["Back to site"]</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark mt-1" asp-area="EZmsIdentity" asp-page="/Account/Manage/Index" title="Manage">@(Localizer["Greeting", User.Identity.Name.Split('@').First()])!</a>
+                    </li>
+                    <li class="nav-item">
+                        <form class="form-inline" asp-area="EZmsIdentity" asp-page="/Account/Logout">
+                            <button type="submit" class="nav-link btn btn-link text-dark">@(Localizer["Logout"])</button>
+                        </form>
+                    </li>
+                    <partial name="~/Areas/EZms/Pages/Shared/_SelectLanguagePartial.cshtml" />
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

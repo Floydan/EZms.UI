@@ -1,0 +1,18 @@
+﻿
+@using EZms.Core.Extensions
+@model IEnumerable<string>
+
+@if (!Model.IsNullOrEmpty())
+{
+    <ul class="m-0 p-0 list-group" style="list-style: none;">
+        @foreach (var role in Model)
+        {
+            <li class="list-group-item">
+                <i class="fas fa-users text-secondary"></i>
+                <a class="list-group-item-action" asp-page="Roles" asp-route-role="@role">
+                    @role
+                </a>
+            </li>
+        }
+    </ul>
+}

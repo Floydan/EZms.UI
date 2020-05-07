@@ -1,0 +1,114 @@
+﻿@using EZms.Core.Constants
+@using Humanizer
+@model EZms.UI.Areas.EZms.Models.ModelProperty
+@if (Model.IsComplexType && string.IsNullOrWhiteSpace(Model.UiHint))
+{
+    <div class="col">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="@(Model.Name)">@Model.DisplayName</label>
+            <div id="complex-id-@(Model.Name)" class="col-sm-10">
+                @{
+                    var grouping = Model.Properties.GroupBy(w => w.Name.Split('.').First(), w => w).ToList();
+                }
+
+                <div id="@Html.GenerateIdFromName(Model.Name)" class="groups accordion sortable">
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var group in grouping)
+                    {
+                        var firstProp = group.First();
+                        var firstPropValue = firstProp.Value ?? group.Key;
+                        var groupName = Html.GenerateIdFromName($"{Model.Name}-{i}");
+                        <div class="card model-group group-@groupName">
+                            <div class="card-header p-1 bg-secondary">
+                                <div class="d-flex align-items-center">
+                                    <div class="sortable-handle ml-4">
+                                        <i class="fas fa-sort text-light"></i>
+                                    </div>
+                                    <h5 class="mb-0 p-0">
+                                        <input type="button" class="btn btn-link text-light" data-toggle="collapse" data-target="#@groupName" value="@(Model.IsEnumerable ? $"{Model.Name.Singularize(inputIsKnownToBePlural: false)} - {firstPropValue}" : Localizer["Details"].Value)"/>
+                                    </h5>
+                                    @if (Model.IsEnumerable)
+                                    {
+                                        <div class="ml-auto mr-4">
+                                            <span class="text-light fas fa-trash" onclick="javascript:$(this).parents('.card').remove();"></span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div id="@Html.GenerateIdFromName($"{Model.Name}-{i}")" class="collapse pt-3" data-parent="#@Html.GenerateIdFromName(Model.Name)">
+                                @foreach (var prop in group)
+                                {
+                                    <partial model="@prop" name="EditorTemplates/RecursiveEditorTemplate" />
+                                }
+                            </div>
+                        </div>
+                        i++;
+                    }
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <small class="text-secondary font-italic">@Model.Description</small>
+                }
+
+                @if (Model.IsEnumerable)
+                {
+                    <button class="mt-2 btn btn-secondary text-uppercase" onclick="javascript:clearModalInputs('#modal-@Model.Name');" data-toggle="modal" data-target="#modal-@Model.Name"><i class="fas fa-plus"></i> Add new item</button>
+
+                    <div class="modal fade" id="modal-@Model.Name" data-form-id="complex-id-@(Model.Name)">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl ">
+                            <div class="modal-content">
+                                <div class="modal-header">@Model.DisplayName - Add new item</div>
+                                <div class="modal-body">
+                                    @foreach (var prop in grouping.First())
+                                    {
+                                        <partial model="@prop" name="EditorTemplates/RecursiveEditorTemplate" />
+                                    }
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#@Model.Name">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="javascript:addModalToForm();">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <span asp-validation-property="@Model"></span>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+
+    <div class="col mb-4">
+        <div class="form-group row">
+            <div class="col-sm-2">
+                <label class="col-form-label" for="@(Model.Name)">@Model.DisplayName</label>
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <div>
+                        <small class="text-secondary font-italic">@Model.Description</small>
+                    </div>
+                }
+            </div>
+            <div class="col-sm-10">
+                @if (Model.IsEnumerable && Model.UiHint != UIHints.Gallery)
+                {
+                    <partial model="@Model" name="EditorTemplates/EnumerableCollection" />
+                }
+                else if (!string.IsNullOrWhiteSpace(Model.UiHint))
+                {
+                    <partial model="@Model" name="EditorTemplates/@Model.UiHint" />
+                }
+                else
+                {
+                    <input property="@Model" class="form-control" />
+                }
+                <span asp-validation-property="@Model"></span>
+            </div>
+        </div>
+    </div>
+}

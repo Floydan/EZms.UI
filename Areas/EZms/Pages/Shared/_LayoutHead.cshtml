@@ -1,0 +1,38 @@
+﻿
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<base href='@Url.Content("~/")'>
+
+<title>EZms</title>
+
+@*<link href="https://fonts.googleapis.com/css?family=Nunito+Sans" rel="stylesheet">*@
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+      integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+      crossorigin="anonymous">
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+
+<environment include="Development">
+    <link rel="stylesheet" href="~/ezms/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/ezms/css/bootstrap-override.css" />
+    <link rel="stylesheet" href="~/ezms/css/markdown.css" />
+    <link rel="stylesheet" href="~/ezms/css/loader.css" />
+    <link rel="stylesheet" href="~/ezms/css/sidebar.css" />
+    <link rel="stylesheet" href="~/ezms/css/ezms.css" />
+</environment>
+<environment exclude="Development">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css"
+          asp-fallback-href="~/ezms/lib/bootstrap/dist/css/bootstrap.min.css"
+          asp-fallback-test-class="sr-only"
+          asp-fallback-test-property="position"
+          asp-fallback-test-value="absolute"
+          integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY="
+          crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/ezms/css/ezms.min.css" asp-append-version="true" />
+
+</environment>
+
+<script>
+    window.baseUrl = window.baseUrl || '@($"{Url.Content("~/")}")';
+</script>

@@ -1,0 +1,46 @@
+﻿@using System.Collections
+@using EZms.UI.Areas.EZms.Models
+@model EZms.UI.Areas.EZms.Models.ModelProperty
+@{
+    var index = 1;
+
+}
+<ul class="list-group enumerable-editor">
+    @if (Model?.Value != null)
+    {
+        foreach (var value in (IEnumerable)Model.Value)
+        {
+            <li class="list-group-item">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <small class="input-group-text" style="font-size: 0.75em">#@index</small>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.UiHint))
+                    {
+                        <partial model="@(new ModelProperty { Name = Model.Name, Value = value})" name="EditorTemplates/@Model.UiHint" />
+                    }
+                    else
+                    {
+                        <input type="text" class="form-control" value="@value" name="@Model.Name" />
+                    }
+                </div>
+            </li>
+            index++;
+        }
+    }
+    <li class="list-group-item new-item">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <small class="input-group-text" style="font-size: 0.75em">#@index</small>
+            </div> 
+            @if (!string.IsNullOrWhiteSpace(Model.UiHint))
+            {
+                <partial model="@(new ModelProperty { Name = Model.Name, Value = null})" name="EditorTemplates/@Model.UiHint" />
+            }
+            else
+            {
+                <input type="text" class="form-control" name="@Model.Name" />
+            }
+        </div>
+    </li>
+</ul>

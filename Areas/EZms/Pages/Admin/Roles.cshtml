@@ -1,0 +1,56 @@
+﻿@page "{role?}"
+@using EZms.Core.Extensions
+@model EZms.UI.Areas.EZms.Pages.Admin.RolesModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="d-flex">
+    <div class="flex-grow-1">
+        <h4>
+            @if (string.IsNullOrEmpty(Model.SelectedRole))
+            {
+                @Localizer["Roles"]
+            }
+            else
+            {
+                @Model.SelectedRole
+            }
+        </h4>
+        <div class="row">
+            <div class="col-12 col-md-6">
+                @if (!Model.AllRoles.IsNullOrEmpty())
+                {
+                    <div>
+                        <partial name="_RolesList" for="AllRoles" />
+                    </div>
+                }
+
+                @if (Model.SelectedRole != null)
+                {
+                    <h4>
+                        @Localizer["Users in role"]
+                    </h4>
+                    <partial name="_UserList" for="Users" />
+                }
+            </div>
+        </div>
+        @if (string.IsNullOrWhiteSpace(Model.SelectedRole))
+        {
+            <div class="row mt-4">
+                <div class="col-12 col-md-6">
+                    <h4>@Localizer["Create role"]</h4>
+                    <form asp-page="Roles" method="post">
+                        <div class="form-group">
+                            <label for="NewRoleName">@Localizer["Role name"]</label>
+                            <input type="text" class="form-control" id="NewRoleName" name="NewRoleName"/>
+                        </div>
+                        <div class="mt-2">
+                            <input type="submit" value="@Localizer["Save"]" class="btn btn-success"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>

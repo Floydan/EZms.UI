@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html class="vh-100">
+<head>
+    <partial name="~/Areas/Ezms/Pages/Shared/_LayoutHead.cshtml" />
+
+    @RenderSection("Styles", required: false)
+</head>
+<body class="vh-100 mb-0">
+    <mini-profiler />
+
+    <partial name="~/Areas/Ezms/Pages/Shared/_LayoutHeader.cshtml" />
+
+    <div class="container-fluid">
+        @*<partial name="_CookieConsentPartial" />*@
+        <main role="main" class="pb-3 h-100 row">
+            @RenderBody()
+        </main>
+    </div>
+
+    <partial name="~/Areas/Ezms/Pages/Shared/_LayoutScripts.cshtml" />
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

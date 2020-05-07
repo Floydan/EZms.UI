@@ -1,0 +1,19 @@
+﻿@page
+@model EZms.UI.Areas.EZms.Pages.DeleteModel
+@{
+    Layout = "Shared/_LayoutIframeContent";
+}
+<div class="row">
+    <div class="col">
+        <h1>Delete <small>@Model.PageContent.Name</small></h1>
+        <h5>Are you sure you want to delete this page and all its child pages?</h5>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form asp-page="Delete" asp-route-id="@Model.PageContent.Id" method="post">
+            <input type="submit" class="btn btn-danger" value="@Localizer["Yes"]" />
+            <a asp-page="Edit" asp-route-id="@Model.PageContent.Id" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

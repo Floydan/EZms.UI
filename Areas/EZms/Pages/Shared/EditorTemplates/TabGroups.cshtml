@@ -1,0 +1,46 @@
+﻿@using EZms.Core.Extensions
+@using EZms.UI.Areas.EZms.Models
+@model IOrderedEnumerable<IGrouping<string, ModelProperty>>
+
+<ul class="nav nav-tabs" role="tablist">
+    @{
+        var isTabFirst = true;
+
+        foreach (var group in Model)
+        {
+            var tabId = group.Key.ConvertToSafeAttributeValue();
+            <li class="nav-item">
+                <a href="#tabpanel-@(tabId)"
+                   id="tab-@(tabId)"
+                   class="nav-link @(isTabFirst ? "active" : "")"
+                   data-toggle="tab"
+                   role="tab"
+                   aria-controls="tabpanel-@(tabId)"
+                   aria-selected="@(isTabFirst ? "true" : "false")">@Localizer[group.Key]</a>
+            </li>
+            isTabFirst = false;
+        }
+
+    }
+</ul>
+<div class="tab-content">
+    @{
+        var isFirstPanel = true;
+
+        foreach (var group in Model)
+        {
+            var tabId = group.Key.ConvertToSafeAttributeValue();
+
+            <div class="tab-pane fade @(isFirstPanel ? "show active" : "") pt-4 pb-5" id="tabpanel-@tabId" role="tabpanel" aria-labelledby="tab-@(tabId)">
+                @foreach (var property in group)
+                {
+                    <div class="row">
+                        <partial model="@property" name="EditorTemplates/RecursiveEditorTemplate" />
+                    </div>
+                }
+            </div>
+            isFirstPanel = false;
+        }
+
+    }
+</div>

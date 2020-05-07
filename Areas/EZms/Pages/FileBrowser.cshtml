@@ -1,0 +1,95 @@
+﻿@page
+@using EZms.Core.Extensions
+@using EZms.UI.Infrastructure.Helpers
+@model EZms.UI.Areas.EZms.Pages.FileBrowserModel
+
+@{
+    Layout = "Shared/_LayoutIframeContent";
+}
+<div class="d-flex flex-column" style="font-size: 13px;">
+    <div class="folders">
+        <h5><i class="far fa-folder"></i> @Localizer["Folders"]</h5>
+        <ul class="list-unstyled">
+            @foreach (var folder in Model.Folders)
+            {
+                <li data-virtualpath="@folder.VirtualPath">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-2 js-toggle-folder">
+                            <i class="fas fa-caret-right"></i>
+                            @*<i class="fas fa-caret-down"></i>*@
+                        </div>
+                        <div class="filebrowser-folder">@folder.Name</div>
+                        <div class="ml-auto js-copy" style="cursor: copy" title="Click to copy path">
+                            <i class="far fa-copy"></i>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="files mt-3">
+        <h5>
+            <i class="far fa-file"></i> @Localizer["Files"]
+            <span class="ml-3 mini-loading"></span>
+        </h5>
+        <ul id="file-list" class="list-unstyled" style="max-height: 25vh; overflow-y: auto;"></ul>
+    </div>
+
+    <div class="preview mt-3">
+        <h5><i class="fas fa-search"></i> @Localizer["Preview"]</h5>
+        <div class="preview-content d-none">
+            <div class="d-flex flex-column">
+                <img src="" class="d-none img-fluid preview-image" />
+                <div><b>@Localizer["Name"]: </b> <span class="preview-name"></span></div>
+                <div><b>@Localizer["Last modified"]: </b> <span class="preview-date"></span></div>
+                <div><b>@Localizer["Size"]: </b> <span class="preview-size"></span></div>
+
+                <h6>@Localizer["Used by"]:</h6>
+                <ul class="file-used-by"></ul>
+                <button class="btn btn-danger btn-sm d-none delete-file"><i class="fas fa-trash"></i> @Localizer["Delete"]</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="upload-area mt-3 bt-dashed">
+        <h5><i class="fas fa-upload"></i> @Localizer["Upload"]</h5>
+        <form>
+            <div>
+                <div class="mb-4">
+                    <label for="upload-area-folder">@Localizer["Upload folder path"]</label>
+                    <input id="upload-area-folder" class="form-control form-control-sm" type="text" placeholder="Folder path"/>
+                </div>
+                <div class="image-form-input drop-area" data-folder-reference="#upload-area-folder" data-file-uploader-type="drop-area" onclick="$(this).siblings('input').click()" style="cursor: pointer; border: 5px dashed #ccc; color: #5e5e5e; border-radius: 10px; width: 100%; padding: 2rem; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 150px">
+                    Paste, drag and drop or browse file to upload...
+                </div>
+
+                <input type="file" multiple="multiple" style="display: none" value="" />
+                <div data-js-element="upload-status-container" class="w-100 d-none">
+                    <h6 class="d-flex justify-content-between pr-3">
+                        @Localizer["Upload status"]
+                        <i class="fas fa-eraser" title="@Localizer["Clear upload history"]" style="cursor: pointer" onclick="$('.upload-status').empty();"></i>
+                    </h6>
+                    <ul class="upload-status mt-2" style="display: none; padding: 1em"></ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+            new EzmsFileBrowser(
+                '@Html.AntiForgeryToken()',
+                '@Model.BasePath',
+                '@Url.Page("FileBrowser", "FolderData")',
+                '@Url.Page("FileBrowser", "SubFolderData")',
+                '@Url.Page("FileBrowser", "FileUsageData")',
+                '@Url.Page("FileBrowser", "Delete")',
+                '@Url.Page("Edit", new { id = 0 })'
+            ).init();
+        });
+    </script>
+}

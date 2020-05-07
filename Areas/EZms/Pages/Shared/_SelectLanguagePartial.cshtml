@@ -1,0 +1,22 @@
+﻿@using EZms.Core.Extensions
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.NativeName.Capitalize() })
+        .ToList();
+}
+
+<li class="nav-item">
+    <form id="selectLanguage" asp-page="/Index" asp-area="EZms" asp-page-handler="SetLanguage" asp-route-returnUrl="@($"{Context.Request.Path}")"
+          method="post" class="mt-2" role="form">
+        <select name="culture" class="form-control form-control-sm"
+                onchange="this.form.submit();"
+                asp-for="@requestCulture.RequestCulture.UICulture.Name" asp-items="@cultureItems"></select>
+    </form>
+</li>

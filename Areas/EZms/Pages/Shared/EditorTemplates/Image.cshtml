@@ -1,0 +1,10 @@
+﻿@model EZms.UI.Areas.EZms.Models.ModelProperty
+
+@{
+    var value = Model.Value as string;
+}
+<div class="input-group">
+    <input name="@Model.Name" type="text" data-file-uploader-type="single" placeholder="Paste, drag and drop or browse file to upload..." class="form-control image-form-input" value="@Model.Value" />
+
+    <partial name="_FileAppendTemplate"/>
+</div>

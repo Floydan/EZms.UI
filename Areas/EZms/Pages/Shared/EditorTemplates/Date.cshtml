@@ -1,0 +1,13 @@
+﻿@model EZms.UI.Areas.EZms.Models.ModelProperty
+@{
+    var date = (DateTime?)Model.Value;
+}
+
+@if (date > DateTime.MinValue)
+{
+    <input name="@Model.Name" type="date" class="form-control" value="@(date.Value.ToString("yyyy-MM-dd"))" />
+}
+else
+{
+    <input name="@Model.Name" type="date" class="form-control" value="" />
+}

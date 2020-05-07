@@ -1,0 +1,241 @@
+﻿@page "/ezms/edit/{id}/{version?}"
+@using EZms.Core.Extensions
+@using EZms.UI.Infrastructure.Helpers
+@model EZms.UI.Areas.EZms.Pages.EditModel
+@{
+    Layout = "Shared/_LayoutIframeContent";
+    var url = ((int?)Model.Id).GetContentFullUrlSlug();
+}
+
+<div class="d-flex flex-row">
+    <div class="ml-auto">
+        @if (Model.SavedVersion != Model.PublishedVersion || !Model.Published)
+        {
+            <a class="btn btn-outline-warning" href="@url?cms-preview=@Model.SavedVersion">
+                <i class="fas fa-eye"></i>
+                @Localizer["Preview version"]
+            </a>
+        }
+        @if (Model.Published)
+        {
+            <a class="btn btn-outline-info" href="@url">
+                <i class="fas fa-globe-europe"></i>
+                @Localizer["View published version"]
+            </a>
+        }
+    </div>
+</div>
+
+<form asp-page="Edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="SavedVersion" />
+    <input type="hidden" asp-for="ContentTypeGuid" />
+    <div class="form-row">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="col-12 p-3 mb-4" style="background: #bfefe1">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-between">
+                        <h3>@Localizer["Page properties"]</h3>
+                        @if (!Model.ContentVersions.IsNullOrEmpty())
+                        {
+                            <div>
+                                <select id="version-switch" class="form-control">
+                                    @{
+                                        var i = Model.ContentVersions.Count();
+                                        foreach (var version in Model.ContentVersions)
+                                        {
+                                            <option value="@version.Id" selected="@(Model.SavedVersion == version.Id)">
+                                                Version - #@i (@version.UpdatedAt.ToString("yyyy.MM.dd.HH.mm.ss"))
+                                                @if (version.Id == Model.PublishedVersion)
+                                                {
+                                                    <text>(@Localizer["Published"])</text>
+                                                }
+                                            </option>
+                                            i--;
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        }
+                        <div>
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-success" title="@Localizer["Save"]" onclick="deleteAllModalsBeforePost();">
+                                    <i class="fas fa-save"></i>
+                                </a>
+                                @if (Model.SavedVersion != Model.PublishedVersion || !Model.Published)
+                                {
+                                    <a class="btn btn-info" title="@Localizer["Publish"]" asp-page-handler="Publish" asp-route-id="@Model.Id" asp-route-versionid="@Model.SavedVersion">
+                                        <i class="fas fa-upload"></i>
+                                    </a>
+                                }
+                                @if (Model.Published)
+                                {
+                                    <a class="btn btn-warning" title="@Localizer["Unpublish"]" asp-page-handler="UnPublish" asp-route-id="@Model.Id">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                }
+
+                                <a asp-page="Delete" title="@Localizer["Delete"]" asp-route-id="@Model.Id" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label">@Localizer[$"CMS.{nameof(Model.Name)}"]</label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UrlSlug" class="control-label">@Localizer[$"CMS.{nameof(Model.UrlSlug)}"]</label>
+                        <input asp-for="UrlSlug" class="form-control" />
+                        <property-description for="UrlSlug"></property-description>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">@Localizer[$"CMS.ContentType"]</label>
+                        <span asp-for="Id" class="form-control">@(Model.ContentTypeGuid.GetPageDataValues()?.Name)</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label asp-for="Id" class="control-label">@Localizer[$"CMS.{nameof(Model.Id)}"]</label>
+                        <span asp-for="Id" class="form-control">@Model.Id</span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ParentId" class="control-label">@Localizer[$"CMS.{nameof(Model.ParentId)}"]</label>
+                        <select asp-for="ParentId" class="form-control" asp-items="@(SelectListHelpers.GetSiteNavigationContentItems(Model?.ParentId))"></select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AllowedGroups" class="control-label">@Localizer[$"Allowed groups"]</label>
+                        <select asp-for="AllowedGroups" class="form-control" multiple="multiple" asp-items="@(SelectListHelpers.GetUserGroups(Model?.AllowedGroups))"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <div class="row">
+                <div class="col">
+                    <h4>@Localizer["Model properties"]</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <partial model="@Model.GroupedProperties" name="EditorTemplates/TabGroups" />
+                    
+                    @*@foreach (var property in Model.ContentModel.GetType().GetProperties())
+                    {
+                        <div class="row">
+                            <div class="col-md-3">
+                                @Html.Label(@property.Name)
+                            </div>
+                            <div class="col-md-3">
+                                @try
+                                {
+                                    @Html.Editor(@property.Name, new {htmlAttributes = new {@class = "form-control"}})
+                                }
+                                catch (Exception)
+                                {
+                                    //do nothing
+                                }
+                                @Html.ValidationMessage(@property.Name, new {htmlAttributes = new {@class = "text-danger"}})
+                            </div>
+                        </div>
+                    }*@
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <script>
+        let timeout = null;
+        
+        function deleteAllModalsBeforePost(e) {
+            e = e || event || null;
+            if(event) event.preventDefault();
+            $('.modal').remove();
+
+            $('input[type=checkbox]:checked').val('True').attr('value', 'True');
+
+            if(event) $(event.target).parents('form')[0].submit();
+        }
+
+        $(document).ready(function() {
+            $('div.sortable').sortable({
+                handle: ".sortable-handle",
+                update: function () {
+                    autoSave();
+                }
+            });
+            
+            $('input[type=checkbox]').each(function() {
+                const cb = $(this);
+                if (cb.val() === 'True')
+                    cb.prop('checked', true);
+            });
+            $('input[type=checkbox]').on('change', function() {
+                const cb = $(this);
+                cb.val(cb.is(':checked'));
+                cb.attr('value', cb.is(':checked'));
+            });
+            $('#version-switch').on('change', function() {
+                const val = $(this).val();
+
+                var url = window.location.href;
+                if (url.indexOf('?') !== -1)
+                    url = url.substr(0, url.indexOf('?'));
+
+                window.location.href = url + `?version=${val}`;
+            });
+
+            setupChangeListeners();
+
+            $(document)
+                .on('reinitialize-change-listeners', setupChangeListeners)
+                .on('autosave', autoSave);
+        });
+
+        function setupChangeListeners() {
+            $('input, select, textarea').off('change.autosave').on('change.autosave', (e) => {
+                if (timeout)
+                    clearTimeout(timeout);
+
+                var hasModalParent = $(e.target).parents('.modal').length !== 0;
+                if (hasModalParent) return;
+
+                timeout = setTimeout(() => { autoSave(); }, 1000);
+            });
+        }
+
+        function getAntiForgeryToken() {
+            var token = '@Html.AntiForgeryToken()';
+            token = $(token).val();
+            return token;
+        }
+
+        function autoSave() {
+            const form = $('form').eq(0);
+
+            $.ajax('@Url.Page("Edit", new {id = Model.Id})', {
+                method: 'POST',
+                dataType: 'application/x-www-form-urlencoded',
+                data: form.serialize(),
+                headers: {
+                    RequestVerificationToken: getAntiForgeryToken()
+                }
+            }).done(() => { console.log('Auto save complete') });
+        }
+    </script>
+}

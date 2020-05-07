@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>    
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>    
+    <Description>EZms UI interface</Description>    
+    <Copyright>Copyright © Joakim Höglund 2020</Copyright>    
+    <PackageLicenseUrl></PackageLicenseUrl>    
+    <PackageTags>CMS EZms</PackageTags>    
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
+    <Version>1.0.12</Version>    
+    <Authors>Joakim Höglund</Authors>    
+    <Product>EZms</Product>    
+    <AssemblyVersion>1.0.12.0</AssemblyVersion>    
+    <FileVersion>1.0.12.0</FileVersion>    
+    <SignAssembly>false</SignAssembly>    
+    <AssemblyOriginatorKeyFile>joakimhoglund.pfx</AssemblyOriginatorKeyFile>    
+    <PackageProjectUrl>https://github.com/Floydan/EZms.UI/</PackageProjectUrl>    
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" PrivateAssets="All" />
+    <PackageReference Include="Humanizer.Core.sv" Version="2.6.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\**\*" />
+  </ItemGroup>
+ 
+
+  <ItemGroup>
+    <ProjectReference Include="..\EZms.Core\EZms.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="bundleconfig.json">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+</Project>

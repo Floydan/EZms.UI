@@ -1,0 +1,32 @@
+[
+    {
+        "outputFileName": "wwwroot/ezms/css/ezms.min.css",
+        "inputFiles": [
+            "wwwroot/ezms/css/bootstrap-override.css",
+            "wwwroot/ezms/css/markdown.css",
+            "wwwroot/ezms/css/loader.css",
+            "wwwroot/ezms/css/sidebar.css",
+            "wwwroot/ezms/css/ezms.css"
+        ]
+    },
+    {
+        "outputFileName": "wwwroot/ezms/js/ezms.min.js",
+        "inputFiles": [
+            "wwwroot/ezms/lib/qrcode.js/qrcode.min.js",
+            "wwwroot/ezms/lib/marked/marked.js",
+            "wwwroot/ezms/js/image-paste.js",
+            "wwwroot/ezms/js/gallery-editor.js",
+            "wwwroot/ezms/js/enumerable-editor.js",
+            "wwwroot/ezms/js/modal-helper.js",
+            "wwwroot/ezms/js/administration.js",
+            "wwwroot/ezms/js/ezms-navigation.js",
+            "wwwroot/ezms/js/ezms-filebrowser.js",
+            "wwwroot/ezms/js/ezms.js"
+        ],
+        "minify": {
+            "enabled": true,
+            "renameLocals": true
+        },
+        "sourceMap": false
+    }
+]

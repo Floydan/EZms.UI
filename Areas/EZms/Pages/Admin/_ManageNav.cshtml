@@ -1,0 +1,13 @@
+﻿@using EZms.UI.Areas.EZms.Pages.Admin
+
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="administration" asp-page="./Index">@Localizer["Administration"]</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @ManageNavPages.UsersNavClass(ViewContext)" id="users" asp-page="./Users" asp-route-id="">@Localizer["Users"]</a>
+    </li>
+    <li id="external-logins" class="nav-item">
+        <a id="roles" class="nav-link @ManageNavPages.RolesNavClass(ViewContext)" asp-page="./Roles" asp-route-role="">@Localizer["Roles"]</a>
+    </li>
+</ul>

@@ -1,0 +1,27 @@
+﻿@using EZms.Core.Extensions
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@if (!Model.IsNullOrEmpty())
+{
+    <ul class="m-0 p-0 list-group" style="list-style: none;">
+        @foreach (var user in Model)
+        {
+            <li class="list-group-item d-flex">
+                <i class="fas fa-user text-secondary mr-2"></i>
+                <a class="list-group-item-action" asp-page="Users" asp-route-id="@user.Id">
+                    @user.UserName
+                </a>
+                <span class="text-secondary ml-2">
+                    @if (user.LockoutEnabled && user.LockoutEnd > DateTimeOffset.UtcNow)
+                    {
+                        <i class="fas fa-lock"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-lock-open"></i>
+                    }
+                </span>
+            </li>
+        }
+    </ul>
+}

@@ -1,0 +1,43 @@
+﻿@model EZms.UI.Areas.EZms.Models.ModelProperty
+<div class="markdown-editor">
+    <div class="toolbar d-flex">
+        <div class="ml-2">
+            <a href="#" class="btn btn-write active">
+                <span class="fa fa-pen"></span> @Localizer["Write"]
+            </a>
+            <a href="#" class="btn btn-preview">
+                <span class="fa fa-eye"></span> @Localizer["Preview"]
+            </a>
+        </div>
+        <div class="functions ml-auto mr-5 mt-1">
+            <div class="d-flex">
+                <div>
+                    <span unselectable="on" class="fas fa-heading p-1" data-actiontype="header" data-toggle="tooltip" data-placement="top" title="Add header text"></span>
+                    <span unselectable="on" class="fas fa-bold p-1" data-actiontype="bold" data-toggle="tooltip" data-placement="top" title="Add bold text <ctrl+b>"></span>
+                    <span unselectable="on" class="fas fa-italic p-1" data-actiontype="italic" data-toggle="tooltip" data-placement="top" title="Add italic text <ctrl+i>"></span>
+                </div>
+                <div class="ml-4">
+                    <span unselectable="on" class="fas fa-quote-right f-btn-quote p-1" data-actiontype="quote" data-toggle="tooltip" data-placement="top" title="Insert a quote"></span>
+                    <span unselectable="on" class="fas fa-code p-1" data-actiontype="code" data-toggle="tooltip" data-placement="top" title="Insert code"></span>
+                    <span unselectable="on" class="fas fa-link p-1" data-actiontype="link" data-toggle="tooltip" data-placement="top" title="Add a link <ctrl+k>"></span>
+                    <span unselectable="on" class="fas fa-image p-1" data-actiontype="image" data-toggle="tooltip" data-placement="top" title="Add an image"></span>
+                </div>
+                <div class="ml-4">
+                    <span unselectable="on" class="fas fa-list-ul p-1" data-actiontype="ulist" data-toggle="tooltip" data-placement="top" title="Add a bulleted list"></span>
+                    <span unselectable="on" class="fas fa-list-ol p-1" data-actiontype="olist" data-toggle="tooltip" data-placement="top" title="Add a numbered list"></span>
+                    <span unselectable="on" class="fas fa-clipboard-list p-1" data-actiontype="clist" data-toggle="tooltip" data-placement="top" title="Add a task list"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <textarea name="@Model.Name" data-file-uploader-type="markdown" id="@Model.Name" class="form-control">@Html.Raw(Model.Value)</textarea>
+    <div class="preview markdown-body"></div>
+    <div class="mt-1">
+        <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+            <span class="fab fa-markdown text-black-50"></span> Styling with Markdown is supported
+        </a>
+    </div>
+    <div style="display: none">
+
+    </div>
+</div>

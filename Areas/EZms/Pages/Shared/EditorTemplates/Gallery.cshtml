@@ -1,0 +1,32 @@
+﻿@model EZms.UI.Areas.EZms.Models.ModelProperty
+@{
+    var index = 1;
+
+}
+<ul class="list-group gallery-editor">
+    @if (Model?.Value != null)
+    {
+        foreach (var img in (IEnumerable<string>)Model.Value)
+        {
+            <li class="list-group-item">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <small class="input-group-text" style="font-size: 0.75em">#@index</small>
+                    </div>
+                    <input type="text" value="@img" data-file-uploader-type="single" placeholder="Paste, drag and drop or browse file to upload..." name="@Model.Name" class="form-control" />
+                    <partial name="_FileAppendTemplate"/>
+                </div>
+            </li>
+            index++;
+        }
+    }
+    <li class="list-group-item">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <small class="input-group-text" style="font-size: 0.75em">#@index</small>
+            </div>
+            <input type="text" name="@Model.Name" data-file-uploader-type="single" placeholder="Paste, drag and drop or browse file to upload..." class="form-control" />
+            <partial name="_FileAppendTemplate"/>
+        </div>
+    </li>
+</ul>
