@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/1cf6dd182aaf2f77d7fe/maintainability)](https://codeclimate.com/github/Floydan/EZms.UI/maintainability)
+
 # EZMS.UI
 This is the User interface part of the EZms CMS platform, for more information on using EZms as a whole, please to to [EZms](https://github.com/Floydan/EZms) or read the [EZms wiki](https://github.com/Floydan/EZms/wiki)
 
