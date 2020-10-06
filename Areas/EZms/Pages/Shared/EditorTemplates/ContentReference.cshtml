@@ -1,4 +1,17 @@
-﻿@using EZms.UI.Infrastructure.Helpers
+﻿@using EZms.Core.Models
+@using EZms.UI.Infrastructure.Helpers
 @model EZms.UI.Areas.EZms.Models.ModelProperty
 
-<select name="@Model.Name" class="form-control" asp-items="@(SelectListHelpers.GetSiteNavigationContentItems((int?)Model?.Value))"></select>
+@{
+    int? value = (int?) null;
+    if (Model?.Value is ContentReference contentReference)
+    {
+        value = contentReference.Id;
+    }
+    else
+    {
+        value = (int?) Model?.Value;
+    }
+}
+
+<select name="@Model.Name" class="form-control" asp-items="@(SelectListHelpers.GetSiteNavigationContentItems(value))"></select>

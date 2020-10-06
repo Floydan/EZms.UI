@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using EZms.Core;
@@ -46,7 +48,7 @@ namespace EZms.UI.Infrastructure.Reflection
             var propertyReadOrder = 0;
             foreach (var propertyInfo in properties)
             {
-                if(!propertyInfo.CanWrite) continue;
+                if (!propertyInfo.CanWrite) continue;
 
                 var isEnumerable = IsPropertyEnumerable(propertyInfo);
                 if (propertyInfo.PropertyType.IsArray || isEnumerable)
@@ -68,7 +70,7 @@ namespace EZms.UI.Infrastructure.Reflection
                                 var entry = GetDefault(arrayEntryType);
                                 arr.Add(entry);
                             }
-                            
+
                             var property = CreateModelProperty(baseName, null, propertyInfo, propertyReadOrder);
                             var subProperties = new List<ModelProperty>();
                             for (var x = 0; x < arr.Count; x++)
@@ -110,7 +112,9 @@ namespace EZms.UI.Infrastructure.Reflection
                 {
                     var value = model == null ? null : propertyInfo.GetValue(model);
                     var property = CreateModelProperty(baseName, GetFormCollectionValue(formCollection, propertyInfo, false, value, baseName), propertyInfo, propertyReadOrder);
-                    if (!propertyInfo.PropertyType.IsPrimitive && propertyInfo.PropertyType != typeof(string))
+                    if (!propertyInfo.PropertyType.IsPrimitive &&
+                        propertyInfo.PropertyType != typeof(string) &&
+                        propertyInfo.PropertyType != typeof(ContentReference))
                     {
                         var childProperties = RecursiveModelProperties(baseName, value, propertyInfo, formCollection);
                         property.Properties = childProperties.OrderBy(w => w.Order).ThenBy(w => w.ReadOrder).ToList();
@@ -133,8 +137,8 @@ namespace EZms.UI.Infrastructure.Reflection
 
             foreach (var propertyInfo in properties)
             {
-                if(!propertyInfo.CanWrite) continue;
-                
+                if (!propertyInfo.CanWrite) continue;
+
                 var isEnumerable = IsPropertyEnumerable(propertyInfo);
                 var testProperty = modelProperties.FirstOrDefault(w => w.PropertyInfo == propertyInfo);
                 if (testProperty != null)
@@ -147,15 +151,25 @@ namespace EZms.UI.Infrastructure.Reflection
 
                             var formGroups = formCollection.Keys.Where(w => w.StartsWith($"{testProperty.Name}["))
                                 .Select(w => w.Split('.').First()).Distinct().ToList();
-
+                            
                             var lst = new List<object>();
-                            var itemProperties = itemsType.GetProperties().ToArray();
-                            foreach (var key in formGroups)
+                            if (!formGroups.Any() && formCollection[testProperty.Name].Count > 0)
                             {
-                                var formProperties = formCollection.Where(w => w.Key.StartsWith(key)).ToList();
-                                var subProperties = RecursiveModelProperties($"{key}.{propertyInfo.Name}.", null, null, new FormCollection(formProperties.ToDictionary(k => k.Key, v => v.Value)), itemProperties);
+                                var converter = TypeDescriptor.GetConverter(itemsType);
+                                lst.AddRange(formCollection[testProperty.Name].Where(key => !string.IsNullOrEmpty(key)).Select(key => converter.ConvertFrom(key)));
+                            }
+                            else
+                            {
+                                var itemProperties = itemsType.GetProperties().ToArray();
+                                foreach (var key in formGroups)
+                                {
+                                    var formProperties = formCollection.Where(w => w.Key.StartsWith(key)).ToList();
+                                    var subProperties = RecursiveModelProperties($"{key}.{propertyInfo.Name}.", null,
+                                        null, new FormCollection(formProperties.ToDictionary(k => k.Key, v => v.Value)),
+                                        itemProperties);
 
-                                lst.Add(CreateTypedPropertyValue(subProperties, itemsType));
+                                    lst.Add(CreateTypedPropertyValue(subProperties, itemsType));
+                                }
                             }
 
                             propertyInfo.SetValue(contentModel, ConvertValueToType(lst, propertyInfo.PropertyType));
@@ -206,7 +220,8 @@ namespace EZms.UI.Infrastructure.Reflection
             var uiHint = propertyInfo.GetCustomAttributes<UIHintAttribute>().FirstOrDefault();
             var isEnumerable = IsPropertyEnumerable(propertyInfo);
 
-            var property = new ModelProperty {
+            var property = new ModelProperty
+            {
                 GroupName = displayValues?.GroupName ?? "General",
                 DisplayName = displayValues?.Name ?? propertyInfo.Name,
                 Name = $"{baseName}{propertyInfo.Name}",
@@ -289,9 +304,11 @@ namespace EZms.UI.Infrastructure.Reflection
 
                     if (enumerable == null) return list;
 
+                    var itemConverter = TypeDescriptor.GetConverter(enumType);
+
                     foreach (var val in enumerable)
                     {
-                        list.Add(Convert.ChangeType(val, enumType));
+                        list.Add(itemConverter.ConvertFrom(val));
                     }
 
                     return list;
@@ -308,7 +325,11 @@ namespace EZms.UI.Infrastructure.Reflection
             var v = value ?? GetDefault(propertyType);
             if (v == null) return null;
 
-            return Convert.ChangeType(v, propertyType);
+            if (v.GetType() == propertyType)
+                return v;
+
+            var converter = TypeDescriptor.GetConverter(propertyType);
+            return converter.ConvertFrom(v);
         }
 
         private static object GetFormCollectionValue(IFormCollection collection, PropertyInfo propertyInfo, bool isEnumerable, object defaultValue, string baseName)
