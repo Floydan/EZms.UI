@@ -23,7 +23,7 @@
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" PrivateAssets="All" />
     <PackageReference Include="Humanizer.Core.sv" Version="2.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.2.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.2.0" />
